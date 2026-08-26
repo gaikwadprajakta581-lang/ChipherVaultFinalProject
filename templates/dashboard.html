@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | CipherVault</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/vault-theme.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-mark">🔐</div>
+            <div class="brand-name">CipherVault</div>
+        </div>
+
+        <div class="nav-section-label">
+            Main
+        </div>
+
+        <a href="/dashboard" class="nav-item active">
+            <span class="ic">▦</span>
+            Dashboard
+        </a>
+
+        <a href="/myfiles" class="nav-item">
+            <span class="ic">▤</span>
+            My Files
+        </a>
+
+        <a href="/shared-with-me" class="nav-item">
+            <span class="ic">↗</span>
+            Shared With Me
+        </a>
+
+        <a href="/my-shares" class="nav-item">
+            <span class="ic">⇧</span>
+            My Shares
+        </a>
+
+        <div class="nav-section-label">
+            Storage
+        </div>
+
+        <a href="/trash" class="nav-item">
+            <span class="ic">♲</span>
+            Recycle Bin
+        </a>
+
+        <a href="/storage-usage" class="nav-item">
+            <span class="ic">◒</span>
+            Storage Usage
+        </a>
+
+        <div class="nav-section-label">
+            Security
+        </div>
+
+        <a href="/activity-log" class="nav-item">
+            <span class="ic">◷</span>
+            Activity Log
+        </a>
+
+        <a href="/versions" class="nav-item">
+            <span class="ic">↻</span>
+            File Versions
+        </a>
+
+        <a href="/profile" class="nav-item">
+            <span class="ic">◎</span>
+            Profile
+        </a>
+
+        <div class="sidebar-footer">
+
+            <div class="avatar">
+                {{ session.get('user', 'U')[0]|upper }}
+            </div>
+
+            <div class="user-meta">
+                <div class="name">
+                    {{ session.get('user', 'User') }}
+                </div>
+
+                <div class="role">
+                    Secure account
+                </div>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div>
+                <h2>Dashboard</h2>
+            </div>
+
+            <div class="vault-status">
+                <span class="pulse-dot"></span>
+                AES-256 · RSA-2048
+            </div>
+
+        </header>
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <section class="content">
+
+            <!-- PAGE HEADING -->
+
+            <div class="page-head">
+
+                <div>
+                    <h1>Welcome back 👋</h1>
+
+                    <p>
+                        Manage your encrypted files securely from one place.
+                    </p>
+                </div>
+
+                <a href="/myfiles" class="btn btn-primary">
+                    📁 View My Files
+                </a>
+
+            </div>
+
+
+            <!-- ================= STATS ================= -->
+
+            <div class="stats">
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            Total Files
+                        </span>
+
+                        <div class="stat-icon icon-gold">
+                            📁
+                        </div>
+
+                    </div>
+
+                    <div class="stat-value">
+                        {{ total_files|default(0) }}
+                    </div>
+
+                    <div class="stat-sub">
+                        Files in your vault
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            Encrypted Files
+                        </span>
+
+                        <div class="stat-icon icon-teal">
+                            🔐
+                        </div>
+
+                    </div>
+
+                    <div class="stat-value">
+                        {{ total_files|default(0) }}
+                    </div>
+
+                    <div class="stat-sub">
+                        Protected with encryption
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            Decrypted Files
+                        </span>
+
+                        <div class="stat-icon icon-orange">
+                            🔓
+                        </div>
+
+                    </div>
+
+                    <div class="stat-value">
+                        {{ decrypted_files|default(0) }}
+                    </div>
+
+                    <div class="stat-sub">
+                        Files accessed securely
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            Security
+                        </span>
+
+                        <div class="stat-icon icon-teal">
+                            🛡️
+                        </div>
+
+                    </div>
+
+                    <div class="stat-value">
+                        AES + RSA
+                    </div>
+
+                    <div class="stat-sub">
+                        Hybrid encryption active
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= MAIN PANELS ================= -->
+
+            <div class="dashboard-grid">
+
+
+                <!-- ================= FILE MANAGEMENT ================= -->
+
+                <div class="panel">
+
+                    <div class="panel-head">
+
+                        <h2>
+                            Secure File Management
+                        </h2>
+
+                        <a href="/myfiles" class="link">
+                            View all →
+                        </a>
+
+                    </div>
+
+
+                    <div style="padding:20px;">
+
+                        <!-- UPLOAD -->
+
+                        <div class="upload-box"
+                             style="background:#fbf7ec;
+                                    border-color:#e8d49c;">
+
+                            <div class="upload-icon"
+                                 style="background:#fbf1da;
+                                        color:#9a7108;">
+
+                                ☁️
+
+                            </div>
+
+                            <h3>
+                                Upload Secure File
+                            </h3>
+
+                            <p>
+                                Your file will be encrypted before storage.
+                            </p>
+
+
+                            <form action="/upload"
+                                  method="POST"
+                                  enctype="multipart/form-data">
+
+                                <input
+                                    type="file"
+                                    name="file"
+                                    required
+                                >
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary"
+                                    style="width:100%;">
+
+                                    🔐 Upload & Encrypt
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+
+                        <!-- QUICK ACTIONS -->
+
+                        <div style="
+                            display:grid;
+                            grid-template-columns:repeat(3,1fr);
+                            gap:10px;
+                            margin-top:15px;
+                        ">
+
+                            <a href="/myfiles"
+                               class="btn">
+
+                                📁 My Files
+
+                            </a>
+
+                            <a href="/shared-with-me"
+                               class="btn">
+
+                                ↗ Shared
+
+                            </a>
+
+                            <a href="/trash"
+                               class="btn">
+
+                                ♲ Trash
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= SECURITY CENTER ================= -->
+
+                <div class="panel">
+
+                    <div class="panel-head">
+
+                        <h2>
+                            Security Center
+                        </h2>
+
+                        <span class="badge badge-teal">
+                            ACTIVE
+                        </span>
+
+                    </div>
+
+
+                    <div style="padding:20px;">
+
+                        <div style="
+                            text-align:center;
+                            padding:15px 0 20px;
+                        ">
+
+                            <div style="
+                                width:85px;
+                                height:85px;
+                                margin:auto;
+                                border-radius:22px;
+                                background:#e4f8f3;
+                                display:flex;
+                                align-items:center;
+                                justify-content:center;
+                                font-size:42px;
+                            ">
+                                🛡️
+                            </div>
+
+                            <h2 style="
+                                margin-top:15px;
+                                font-size:18px;
+                            ">
+                                System Secure
+                            </h2>
+
+                            <div class="badge badge-teal"
+                                 style="margin-top:8px;">
+
+                                ● Encryption Active
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="security-info">
+
+                            <div class="security-item"
+                                 style="
+                                    background:#fbf7ec;
+                                    border-color:#e8e0c9;
+                                 ">
+
+                                ⚡
+
+                                <span>
+                                    <strong>AES-256</strong><br>
+                                    Fast file encryption
+                                </span>
+
+                            </div>
+
+
+                            <div class="security-item"
+                                 style="
+                                    background:#fbf7ec;
+                                    border-color:#e8e0c9;
+                                 ">
+
+                                🔑
+
+                                <span>
+                                    <strong>RSA-2048</strong><br>
+                                    AES key protection
+                                </span>
+
+                            </div>
+
+
+                            <div class="security-item"
+                                 style="
+                                    background:#fbf7ec;
+                                    border-color:#e8e0c9;
+                                 ">
+
+                                ✓
+
+                                <span>
+                                    <strong>Integrity Protection</strong><br>
+                                    SHA-256 verification
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= SECURITY MESSAGE ================= -->
+
+            <div class="panel" style="margin-top:20px;">
+
+                <div style="
+                    padding:18px 20px;
+                    display:flex;
+                    align-items:center;
+                    gap:12px;
+                ">
+
+                    <div style="
+                        width:38px;
+                        height:38px;
+                        border-radius:10px;
+                        background:#e4f8f3;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                    ">
+                        🔒
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Your files are protected
+                        </strong>
+
+                        <div style="
+                            font-size:12px;
+                            color:#7d765f;
+                            margin-top:3px;
+                        ">
+
+                            Files are encrypted using AES-256
+                            and encryption keys are protected using RSA-2048.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <footer style="
+            padding:18px 30px;
+            border-top:1px solid #e8e0c9;
+            background:#ffffff;
+            color:#9b947f;
+            font-size:11px;
+            text-align:center;
+        ">
+
+            🔐 CipherVault · Hybrid Encrypted Cloud File Storage System
+            · AES-256 + RSA-2048
+
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>
+```

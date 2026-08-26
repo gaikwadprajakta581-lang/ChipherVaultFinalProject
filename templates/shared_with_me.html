@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Shared With Me | Hybrid Encrypted Cloud Storage</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/vault-theme.css') }}">
+
+<style>
+/* CipherVault consistency */
+html, body { min-height:100%; height:auto !important; overflow-y:auto !important; }
+.app-shell { min-height:100vh; height:auto !important; }
+.main { min-height:100vh; height:auto !important; overflow-y:visible !important; }
+.content { height:auto !important; max-height:none !important; overflow-y:visible !important; }
+</style>
+</head>
+
+<body>
+
+<div class="app-shell">
+
+  <aside class="sidebar">
+
+    <div class="brand">
+      <div class="brand-mark">&#128274;</div>
+      <div class="brand-name">CipherVault</div>
+    </div>
+
+    <div class="nav-section-label">Workspace</div>
+
+    <a href="/dashboard" class="nav-item">
+      <span class="ic">&#9635;</span> Dashboard
+    </a>
+
+    <a href="/myfiles" class="nav-item">
+      <span class="ic">&#128193;</span> My files
+    </a>
+
+    <a href="/trash" class="nav-item">
+      <span class="ic">&#128465;</span> Recycle bin
+    </a>
+
+    <div class="nav-section-label">Collaboration</div>
+
+    <a href="/my-shares" class="nav-item">
+      <span class="ic">&#128279;</span> My shares
+    </a>
+
+    <a href="/shared-with-me" class="nav-item active">
+      <span class="ic">&#128229;</span> Shared with me
+    </a>
+
+    <div class="nav-section-label">Account</div>
+
+    <a href="/activity-log" class="nav-item">
+      <span class="ic">&#128203;</span> Activity log
+    </a>
+
+    <a href="/storage-usage" class="nav-item">
+      <span class="ic">&#128190;</span> Storage usage
+    </a>
+
+    <a href="/profile" class="nav-item">
+      <span class="ic">&#9881;</span> Profile
+    </a>
+
+    <div class="sidebar-footer">
+      <div class="avatar">
+        {{ (session.get('fullname') or 'U')[0]|upper }}
+      </div>
+
+      <div class="user-meta">
+        <div class="name">
+          {{ session.get('fullname', 'User') }}
+        </div>
+
+        <div class="role">
+          {{ session.get('email', '') }}
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+
+  <div class="main">
+
+    <div class="topbar">
+
+      <h2 style="font-size:15px;">
+        Shared with me
+      </h2>
+
+      <div class="vault-status">
+        <span class="pulse-dot"></span>
+        AES-256 · RSA-2048 active
+      </div>
+
+    </div>
+
+
+    <div class="content">
+
+      <div class="page-head">
+
+        <div>
+          <h1>Shared with me</h1>
+          <p>Files that other users have shared with you.</p>
+        </div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-head">
+          <h2>Shared files</h2>
+        </div>
+
+
+        {% if shares %}
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>File</th>
+                <th>Shared by</th>
+                <th>Permission</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+
+            <tbody>
+
+              {% for share in shares %}
+
+              <tr>
+
+                <td>
+                  <div style="font-weight:600;">
+                    {{ share.filename }}
+                  </div>
+                </td>
+
+                <td>
+                  {{ share.owner_email }}
+                </td>
+
+                <td>
+                  {{ share.permission or 'Download' }}
+                </td>
+
+                <td>
+
+                  <a
+                    href="/shared-download/{{ share.id }}"
+                    class="btn">
+                    Download
+                  </a>
+
+                </td>
+
+              </tr>
+
+              {% endfor %}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        {% else %}
+
+        <div style="padding:40px;text-align:center;color:var(--muted);">
+
+          <div style="font-size:40px;margin-bottom:12px;">
+            &#128229;
+          </div>
+
+          <h3>No shared files</h3>
+
+          <p>No one has shared files with you yet.</p>
+
+        </div>
+
+        {% endif %}
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

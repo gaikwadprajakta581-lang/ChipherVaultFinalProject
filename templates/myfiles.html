@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Files | CipherVault</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/vault-theme.css') }}">
+
+</head>
+
+
+<body>
+
+<div class="app-shell">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-mark">
+                🔐
+            </div>
+
+            <div class="brand-name">
+                CipherVault
+            </div>
+
+        </div>
+
+
+        <div class="nav-section-label">
+            Main
+        </div>
+
+
+        <a href="/dashboard"
+           class="nav-item">
+
+            <span class="ic">▦</span>
+
+            Dashboard
+
+        </a>
+
+
+        <a href="/myfiles"
+           class="nav-item active">
+
+            <span class="ic">▤</span>
+
+            My Files
+
+        </a>
+
+
+        <a href="/shared-with-me"
+           class="nav-item">
+
+            <span class="ic">↗</span>
+
+            Shared With Me
+
+        </a>
+
+
+        <a href="/my-shares"
+           class="nav-item">
+
+            <span class="ic">⇧</span>
+
+            My Shares
+
+        </a>
+
+
+        <div class="nav-section-label">
+            Storage
+        </div>
+
+
+        <a href="/trash"
+           class="nav-item">
+
+            <span class="ic">♲</span>
+
+            Recycle Bin
+
+        </a>
+
+
+        <a href="/storage-usage"
+           class="nav-item">
+
+            <span class="ic">◒</span>
+
+            Storage Usage
+
+        </a>
+
+
+        <div class="nav-section-label">
+            Security
+        </div>
+
+
+        <a href="/activity-log"
+           class="nav-item">
+
+            <span class="ic">◷</span>
+
+            Activity Log
+
+        </a>
+
+
+        <a href="/versions"
+           class="nav-item">
+
+            <span class="ic">↻</span>
+
+            File Versions
+
+        </a>
+
+
+        <a href="/profile"
+           class="nav-item">
+
+            <span class="ic">◎</span>
+
+            Profile
+
+        </a>
+
+
+        <!-- USER -->
+
+        <div class="sidebar-footer">
+
+            <div class="avatar">
+
+                {{ session.get('fullname', 'U')[0]|upper }}
+
+            </div>
+
+
+            <div class="user-meta">
+
+                <div class="name">
+
+                    {{ session.get('fullname', 'User') }}
+
+                </div>
+
+
+                <div class="role">
+
+                    {{ session.get('email', '') }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <h2>
+                My Files
+            </h2>
+
+
+            <div class="vault-status">
+
+                <span class="pulse-dot"></span>
+
+                AES-256 · RSA-2048 active
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <section class="content">
+
+
+            <!-- PAGE HEADER -->
+
+            <div class="page-head">
+
+                <div>
+
+                    <h1>
+                        Your encrypted files
+                    </h1>
+
+                    <p>
+                        Every file is encrypted before being stored.
+                    </p>
+
+                </div>
+
+
+                <a href="#uploadBox"
+                   class="btn btn-primary">
+
+                    ↑ Upload File
+
+                </a>
+
+            </div>
+
+
+
+            <!-- ================= UPLOAD BOX ================= -->
+
+            <div id="uploadBox"
+                 class="panel"
+                 style="
+                    margin-bottom:20px;
+                    background:#fffdf8;
+                 ">
+
+                <div class="panel-head">
+
+                    <h2>
+                        🔐 Secure File Upload
+                    </h2>
+
+                    <span class="badge badge-teal">
+                        AES-256
+                    </span>
+
+                </div>
+
+
+                <div style="padding:20px;">
+
+                    <form action="/upload"
+                          method="POST"
+                          enctype="multipart/form-data">
+
+                        <div style="
+                            display:flex;
+                            align-items:center;
+                            gap:12px;
+                            flex-wrap:wrap;
+                        ">
+
+
+                            <input
+                                type="file"
+                                name="file"
+                                required
+                                style="
+                                    flex:1;
+                                    min-width:220px;
+                                    padding:10px;
+                                    border:1px solid var(--border);
+                                    border-radius:8px;
+                                    background:white;
+                                "
+                            >
+
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary">
+
+                                🔒 Encrypt & Upload
+
+                            </button>
+
+                        </div>
+
+
+                        <p style="
+                            margin-top:9px;
+                            color:var(--muted);
+                            font-size:11.5px;
+                        ">
+
+                            Your selected file will be encrypted
+                            using AES-256 before storage.
+
+                        </p>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= SEARCH + STORAGE ================= -->
+
+            <div style="
+                display:flex;
+                align-items:center;
+                gap:12px;
+                margin-bottom:18px;
+                flex-wrap:wrap;
+            ">
+
+
+                <!-- SEARCH -->
+
+                <form
+                    method="GET"
+                    action="/myfiles"
+                    style="
+                        flex:1;
+                        min-width:230px;
+                        display:flex;
+                        align-items:center;
+                        gap:8px;
+                        background:white;
+                        border:1px solid var(--border);
+                        border-radius:9px;
+                        padding:10px 14px;
+                    "
+                >
+
+                    <span style="
+                        color:var(--faint);
+                    ">
+                        🔍
+                    </span>
+
+
+                    <input
+                        type="text"
+                        name="search"
+                        placeholder="Search files by name..."
+                        value="{{ search|default('') }}"
+                        style="
+                            border:none;
+                            outline:none;
+                            background:transparent;
+                            width:100%;
+                            font-family:Inter,sans-serif;
+                            font-size:13px;
+                            color:var(--text);
+                        "
+                    >
+
+                </form>
+
+
+
+                <!-- STORAGE -->
+
+                <div style="
+                    display:flex;
+                    align-items:center;
+                    gap:8px;
+                    background:white;
+                    border:1px solid var(--border);
+                    border-radius:9px;
+                    padding:10px 15px;
+                    color:var(--muted);
+                    font-size:12px;
+                    white-space:nowrap;
+                ">
+
+                    💾
+
+                    <strong style="
+                        color:var(--text);
+                    ">
+
+                        {{ total_storage }}
+
+                    </strong>
+
+                    used
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= FILE TABLE ================= -->
+
+            <div class="panel">
+
+
+                {% if files %}
+
+
+                <div class="panel-head">
+
+                    <h2>
+                        Stored Files
+                    </h2>
+
+
+                    <span class="badge">
+
+                        🔐 {{ files|length }} files
+
+                    </span>
+
+                </div>
+
+
+
+                <div style="
+                    overflow-x:auto;
+                ">
+
+
+                    <table>
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    File
+                                </th>
+
+                                <th>
+                                    Security
+                                </th>
+
+                                <th>
+                                    Size
+                                </th>
+
+                                <th>
+                                    Uploaded
+                                </th>
+
+                                <th style="
+                                    text-align:right;
+                                ">
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+
+                        <tbody>
+
+
+                        {% for file in files %}
+
+
+                            <tr>
+
+
+                                <!-- FILE -->
+
+                                <td>
+
+                                    <div class="file-cell">
+
+
+                                        <div class="file-ic">
+
+                                            {{ file.filename.split('.')[-1][:3]|upper
+                                               if '.' in file.filename
+                                               else 'FILE' }}
+
+                                        </div>
+
+
+                                        <div>
+
+                                            <div class="file-name">
+
+                                                {{ file.filename }}
+
+                                            </div>
+
+
+                                            <div class="file-sub">
+
+                                                Stored securely
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+
+                                <!-- SECURITY -->
+
+                                <td>
+
+                                    <span class="badge badge-teal">
+
+                                        🔒 ENCRYPTED
+
+                                    </span>
+
+                                </td>
+
+
+
+                                <!-- SIZE -->
+
+                                <td>
+
+                                    <span style="
+                                        font-family:'JetBrains Mono',monospace;
+                                        font-size:11.5px;
+                                        color:var(--muted);
+                                    ">
+
+                                        {{ file.size }}
+
+                                    </span>
+
+                                </td>
+
+
+
+                                <!-- DATE -->
+
+                                <td>
+
+                                    <span style="
+                                        font-size:12px;
+                                        color:var(--muted);
+                                    ">
+
+                                        {{ file.upload_date }}
+
+                                    </span>
+
+                                </td>
+
+
+
+                                <!-- ACTIONS -->
+
+                                <td>
+
+                                    <div class="actions-cell">
+
+
+                                        <!-- DOWNLOAD -->
+
+                                        <a
+                                            href="/download/{{ file.filename }}"
+                                            class="icon-btn"
+                                            title="Download"
+                                        >
+
+                                            ↓
+
+                                        </a>
+
+
+
+                                        <!-- SHARE -->
+
+                                        <a
+                                            href="/share/{{ file.filename }}"
+                                            class="icon-btn"
+                                            title="Share"
+                                        >
+
+                                            ↗
+
+                                        </a>
+
+
+
+                                        <!-- VERSIONS -->
+
+                                        <a
+                                            href="/versions/{{ file.filename }}"
+                                            class="icon-btn"
+                                            title="Versions"
+                                        >
+
+                                            ↻
+
+                                        </a>
+
+
+
+                                        <!-- DELETE -->
+
+                                        <a
+                                            href="/delete/{{ file.filename }}"
+                                            class="icon-btn danger"
+                                            title="Delete"
+                                            onclick="
+                                                return confirm(
+                                                    'Move this file to Recycle Bin?'
+                                                );
+                                            "
+                                        >
+
+                                            🗑
+
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+
+                            </tr>
+
+
+                        {% endfor %}
+
+
+                        </tbody>
+
+
+                    </table>
+
+                </div>
+
+
+                {% else %}
+
+
+                <!-- ================= EMPTY STATE ================= -->
+
+                <div class="empty-state">
+
+                    <div class="ic">
+                        📁
+                    </div>
+
+
+                    <h3 style="
+                        color:var(--text);
+                        margin-bottom:6px;
+                    ">
+
+                        No files found
+
+                    </h3>
+
+
+                    <p>
+
+                        Upload your first file to start
+                        using your secure cloud vault.
+
+                    </p>
+
+
+                    <a
+                        href="#uploadBox"
+                        class="btn btn-primary"
+                    >
+
+                        ↑ Upload First File
+
+                    </a>
+
+                </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+
+
+            <!-- ================= SECURITY INFO ================= -->
+
+            <div class="panel"
+                 style="margin-top:20px;">
+
+                <div style="
+                    padding:17px 20px;
+                    display:flex;
+                    align-items:center;
+                    gap:12px;
+                ">
+
+
+                    <div style="
+                        width:38px;
+                        height:38px;
+                        border-radius:10px;
+                        background:#e4f8f3;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        flex-shrink:0;
+                    ">
+
+                        🛡️
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Your files are protected
+                        </strong>
+
+
+                        <p style="
+                            color:var(--muted);
+                            font-size:11.5px;
+                            margin-top:3px;
+                        ">
+
+                            AES-256 encrypts your files while
+                            RSA-2048 protects the encryption keys.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- FOOTER -->
+
+        <footer style="
+            padding:18px 30px;
+            border-top:1px solid var(--border);
+            background:#ffffff;
+            color:#9b947f;
+            font-size:11px;
+            text-align:center;
+        ">
+
+            🔐 CipherVault · Hybrid Encrypted Cloud File Storage System
+            · AES-256 + RSA-2048
+
+        </footer>
+
+
+    </main>
+
+</div>
+
+
+</body>
+
+</html>
+```
+

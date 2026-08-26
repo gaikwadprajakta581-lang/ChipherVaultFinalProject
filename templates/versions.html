@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>File Versions | CipherVault</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/vault-theme.css') }}">
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-mark">🔐</div>
+            <div class="brand-name">CipherVault</div>
+        </div>
+
+        <div class="nav-section-label">Main</div>
+
+        <a href="/dashboard" class="nav-item">
+            <span class="ic">▦</span>
+            Dashboard
+        </a>
+
+        <a href="/myfiles" class="nav-item">
+            <span class="ic">▤</span>
+            My Files
+        </a>
+
+        <a href="/shared-with-me" class="nav-item">
+            <span class="ic">↗</span>
+            Shared With Me
+        </a>
+
+        <a href="/my-shares" class="nav-item">
+            <span class="ic">⇧</span>
+            My Shares
+        </a>
+
+        <div class="nav-section-label">Storage</div>
+
+        <a href="/trash" class="nav-item">
+            <span class="ic">♲</span>
+            Recycle Bin
+        </a>
+
+        <a href="/storage-usage" class="nav-item">
+            <span class="ic">◒</span>
+            Storage Usage
+        </a>
+
+        <div class="nav-section-label">Security</div>
+
+        <a href="/activity-log" class="nav-item">
+            <span class="ic">◷</span>
+            Activity Log
+        </a>
+
+        <a href="/versions" class="nav-item active">
+            <span class="ic">↻</span>
+            File Versions
+        </a>
+
+        <a href="/profile" class="nav-item">
+            <span class="ic">◎</span>
+            Profile
+        </a>
+
+        <div class="sidebar-footer">
+
+            <div class="avatar">
+                {{ session.get('fullname', 'U')[0]|upper }}
+            </div>
+
+            <div class="user-meta">
+
+                <div class="name">
+                    {{ session.get('fullname', 'User') }}
+                </div>
+
+                <div class="role">
+                    Secure account
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <h2>File Versions</h2>
+
+            <div class="vault-status">
+                <span class="pulse-dot"></span>
+                Version Control Active
+            </div>
+
+        </header>
+
+
+        <section class="content">
+
+            <!-- PAGE HEADER -->
+
+            <div class="page-head">
+
+                <div>
+
+                    <h1>File Versions</h1>
+
+                    <p>
+                        View and manage previous versions of your files.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- INFO CARDS -->
+
+            <div class="stats">
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            Version Control
+                        </span>
+
+                        <div class="stat-icon icon-gold">
+                            ↻
+                        </div>
+
+                    </div>
+
+                    <div class="stat-value">
+                        ACTIVE
+                    </div>
+
+                    <div class="stat-sub">
+                        Version history enabled
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            Encryption
+                        </span>
+
+                        <div class="stat-icon icon-teal">
+                            🔐
+                        </div>
+
+                    </div>
+
+                    <div class="stat-value">
+                        AES-256
+                    </div>
+
+                    <div class="stat-sub">
+                        Versions are encrypted
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            Integrity
+                        </span>
+
+                        <div class="stat-icon icon-teal">
+                            ✓
+                        </div>
+
+                    </div>
+
+                    <div class="stat-value">
+                        SHA-256
+                    </div>
+
+                    <div class="stat-sub">
+                        File integrity protection
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <span class="stat-label">
+                            Key Security
+                        </span>
+
+                        <div class="stat-icon icon-teal">
+                            🔑
+                        </div>
+
+                    </div>
+
+                    <div class="stat-value">
+                        RSA-2048
+                    </div>
+
+                    <div class="stat-sub">
+                        Encryption key protection
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- VERSION LIST -->
+
+            <div class="panel">
+
+                <div class="panel-head">
+
+                    <h2>
+                        🔄 Version History
+                    </h2>
+
+                    <span class="badge badge-teal">
+                        SECURE
+                    </span>
+
+                </div>
+
+
+                {% if versions %}
+
+                <div style="overflow-x:auto;">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    File
+                                </th>
+
+                                <th>
+                                    Version
+                                </th>
+
+                                <th>
+                                    Size
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th style="text-align:right;">
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        {% for version in versions %}
+
+                            <tr>
+
+                                <!-- FILE -->
+
+                                <td>
+
+                                    <div class="file-cell">
+
+                                        <div class="file-ic">
+
+                                            {{ version.filename.split('.')[-1][:3]|upper
+                                               if '.' in version.filename
+                                               else 'FILE' }}
+
+                                        </div>
+
+                                        <div>
+
+                                            <div class="file-name">
+
+                                                {{ version.filename }}
+
+                                            </div>
+
+                                            <div class="file-sub">
+
+                                                Encrypted version
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- VERSION -->
+
+                                <td>
+
+                                    <span class="badge">
+
+                                        v{{ version.version
+                                           if version.version
+                                           else '1' }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- SIZE -->
+
+                                <td>
+
+                                    <span style="
+                                        font-family:'JetBrains Mono',monospace;
+                                        font-size:11px;
+                                        color:var(--muted);
+                                    ">
+
+                                        {{ version.size|default('—') }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- DATE -->
+
+                                <td>
+
+                                    <span style="
+                                        color:var(--muted);
+                                        font-size:12px;
+                                    ">
+
+                                        {{ version.created_at
+                                           if version.created_at
+                                           else version.date
+                                           if version.date
+                                           else '—' }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- STATUS -->
+
+                                <td>
+
+                                    <span class="badge badge-teal">
+
+                                        🔒 ENCRYPTED
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- ACTION -->
+
+                                <td>
+
+                                    <div class="actions-cell">
+
+                                        {% if version.filename %}
+
+                                        <a
+                                            href="/download/{{ version.filename }}"
+                                            class="icon-btn"
+                                            title="Download"
+                                        >
+                                            ↓
+                                        </a>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                {% else %}
+
+                <!-- EMPTY -->
+
+                <div class="empty-state">
+
+                    <div class="ic">
+                        ↻
+                    </div>
+
+                    <h3 style="
+                        color:var(--text);
+                        margin-bottom:6px;
+                    ">
+
+                        No file versions yet
+
+                    </h3>
+
+                    <p>
+
+                        Previous versions of your files will
+                        appear here when available.
+
+                    </p>
+
+                    <a href="/myfiles"
+                       class="btn btn-primary">
+
+                        📁 Go to My Files
+
+                    </a>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- SECURITY NOTICE -->
+
+            <div class="panel"
+                 style="margin-top:20px;">
+
+                <div style="
+                    padding:18px 20px;
+                    display:flex;
+                    align-items:center;
+                    gap:12px;
+                ">
+
+                    <div style="
+                        width:40px;
+                        height:40px;
+                        border-radius:10px;
+                        background:#e4f8f3;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                    ">
+
+                        🛡️
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Version history is protected
+                        </strong>
+
+                        <p style="
+                            color:var(--muted);
+                            font-size:11.5px;
+                            margin-top:3px;
+                        ">
+
+                            Previous file versions remain protected
+                            by CipherVault's encryption system.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <footer style="
+            padding:18px 30px;
+            border-top:1px solid var(--border);
+            background:#ffffff;
+            color:#9b947f;
+            font-size:11px;
+            text-align:center;
+        ">
+
+            🔐 CipherVault · Hybrid Encrypted Cloud File Storage System
+
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,897 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CipherVault | Secure Cloud Storage</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/vault-theme.css') }}">
+
+    <style>
+
+        body {
+            background: #fbf8ef;
+        }
+
+        .landing {
+            min-height: 100vh;
+        }
+
+        /* NAVBAR */
+
+        .landing-nav {
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            background: rgba(255,255,255,0.96);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .landing-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 21px;
+            font-weight: 700;
+            color: #171711;
+        }
+
+        .landing-logo-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5e7bd;
+            border: 1px solid #e3cb86;
+            font-size: 20px;
+        }
+
+        .landing-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .landing-links a {
+            text-decoration: none;
+        }
+
+        .landing-links .login-btn {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            min-width: 95px;
+            border: 1px solid #d9b65a;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #171711 !important;
+            font-weight: 700;
+            text-decoration: none !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        .landing-links .login-btn:hover {
+            background: #fbf1da;
+        }
+
+
+        /* HERO */
+
+        .hero {
+            max-width: 1180px;
+            margin: auto;
+            padding: 85px 30px 65px;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 13px;
+            border-radius: 30px;
+            background: #e5f7f2;
+            color: #167b6c;
+            border: 1px solid #b9e6dc;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .5px;
+        }
+
+        .hero h1 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: clamp(42px, 5vw, 67px);
+            line-height: 1.04;
+            letter-spacing: -2.5px;
+            color: #171711;
+            margin: 20px 0;
+        }
+
+        .hero h1 span {
+            color: #a67b0b;
+        }
+
+        .hero-text {
+            max-width: 570px;
+            color: #77705f;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .hero-buttons .btn {
+            padding: 13px 21px;
+        }
+
+
+        /* SECURITY CARD */
+
+        .security-card {
+            background: white;
+            border: 1px solid #e5ddc9;
+            border-radius: 20px;
+            padding: 27px;
+            box-shadow: 0 15px 45px rgba(80,65,25,.08);
+        }
+
+        .security-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .security-title {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .shield {
+            width: 65px;
+            height: 65px;
+            border-radius: 18px;
+            background: #e5f7f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 31px;
+        }
+
+        .security-status {
+            margin-top: 25px;
+            padding: 14px;
+            border-radius: 11px;
+            background: #fbf8ef;
+            border: 1px solid #e7dfca;
+        }
+
+        .security-status strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .security-status p {
+            color: #827b69;
+            font-size: 11.5px;
+            line-height: 1.6;
+        }
+
+        .security-feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid #eee8da;
+        }
+
+        .security-feature:last-child {
+            border-bottom: none;
+        }
+
+        .security-feature-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #fbf1da;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .security-feature strong {
+            font-size: 13px;
+        }
+
+        .security-feature p {
+            margin-top: 3px;
+            color: #817967;
+            font-size: 11px;
+        }
+
+
+        /* FEATURES */
+
+        .features {
+            background: white;
+            border-top: 1px solid #e7dfca;
+            border-bottom: 1px solid #e7dfca;
+            padding: 65px 7%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .section-title h2 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 32px;
+            color: #171711;
+        }
+
+        .section-title p {
+            color: #817967;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .feature-grid {
+            max-width: 1100px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 18px;
+        }
+
+        .feature-card {
+            padding: 25px;
+            border: 1px solid #e6dfce;
+            border-radius: 14px;
+            background: #fffdf8;
+        }
+
+        .feature-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: #fbf1da;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            margin-bottom: 17px;
+        }
+
+        .feature-card h3 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 16px;
+        }
+
+        .feature-card p {
+            margin-top: 8px;
+            color: #7d765f;
+            font-size: 11.5px;
+            line-height: 1.7;
+        }
+
+
+        /* HOW IT WORKS */
+
+        .how {
+            max-width: 1050px;
+            margin: auto;
+            padding: 70px 30px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 20px;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            margin: auto;
+            border-radius: 50%;
+            background: #f5e7bd;
+            border: 1px solid #dfc57b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #89650b;
+            font-weight: 700;
+        }
+
+        .step h3 {
+            margin-top: 15px;
+            font-size: 15px;
+        }
+
+        .step p {
+            margin-top: 7px;
+            color: #7d765f;
+            font-size: 11.5px;
+            line-height: 1.6;
+        }
+
+
+        /* CTA */
+
+        .cta {
+            max-width: 1050px;
+            margin: 0 auto 65px;
+            padding: 45px 30px;
+            border-radius: 20px;
+            background: #f5e7bd;
+            border: 1px solid #dfc57b;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 29px;
+        }
+
+        .cta p {
+            margin: 10px auto 22px;
+            color: #70674e;
+            font-size: 13px;
+        }
+
+
+        /* FOOTER */
+
+        .landing-footer {
+            padding: 25px;
+            text-align: center;
+            background: white;
+            border-top: 1px solid #e7dfca;
+            color: #928a77;
+            font-size: 11px;
+        }
+
+
+        /* MOBILE */
+
+        @media(max-width:850px) {
+
+            .landing-nav {
+                padding: 0 20px;
+            }
+
+            .landing-links .btn:not(.btn-primary) {
+                display: none;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 55px;
+            }
+
+            .feature-grid,
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 43px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="landing">
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="landing-nav">
+
+        <a href="/"
+           style="text-decoration:none;">
+
+            <div class="landing-logo">
+
+                <div class="landing-logo-mark">
+                    🔐
+                </div>
+
+                CipherVault
+
+            </div>
+
+        </a>
+
+
+        <div class="landing-links">
+
+            <a href="/login"
+               class="btn login-btn">
+
+                🔐 Login
+
+            </a>
+
+            <a href="/register"
+               class="btn btn-primary">
+
+                Get Started
+
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+
+        <div>
+
+            <div class="hero-badge">
+
+                <span class="pulse-dot"></span>
+
+                HYBRID ENCRYPTED CLOUD STORAGE
+
+            </div>
+
+
+            <h1>
+
+                Your files.
+                <br>
+
+                <span>Your vault.</span>
+                <br>
+
+                Your control.
+
+            </h1>
+
+
+            <p class="hero-text">
+
+                CipherVault is a secure cloud file storage system
+                designed to protect your files using powerful
+                hybrid encryption technology.
+
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a href="/register"
+                   class="btn btn-primary">
+
+                    🔐 Create Secure Vault
+
+                </a>
+
+
+                <a href="/login"
+                   class="btn">
+
+                    Sign In →
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SECURITY CARD -->
+
+        <div class="security-card">
+
+            <div class="security-top">
+
+                <div>
+
+                    <div class="security-title">
+                        Vault Security
+                    </div>
+
+                    <span class="badge badge-teal"
+                          style="margin-top:7px;">
+
+                        ● SYSTEM SECURE
+
+                    </span>
+
+                </div>
+
+
+                <div class="shield">
+                    🛡️
+                </div>
+
+            </div>
+
+
+            <div class="security-status">
+
+                <strong>
+                    🔒 Your files are protected
+                </strong>
+
+                <p>
+
+                    Files are encrypted before being stored
+                    and protected with multiple security layers.
+
+                </p>
+
+            </div>
+
+
+            <div class="security-feature">
+
+                <div class="security-feature-icon">
+                    ⚡
+                </div>
+
+                <div>
+
+                    <strong>
+                        AES-256 Encryption
+                    </strong>
+
+                    <p>
+                        Fast and secure file encryption
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="security-feature">
+
+                <div class="security-feature-icon">
+                    🔑
+                </div>
+
+                <div>
+
+                    <strong>
+                        RSA-2048 Key Protection
+                    </strong>
+
+                    <p>
+                        Secure protection for encryption keys
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="security-feature">
+
+                <div class="security-feature-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        SHA-256 Integrity
+                    </strong>
+
+                    <p>
+                        Detect unauthorized file changes
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= FEATURES ================= -->
+
+    <section class="features">
+
+        <div class="section-title">
+
+            <h2>
+                Everything you need for secure storage
+            </h2>
+
+            <p>
+                Built around security, privacy and easy file management.
+            </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🔐
+                </div>
+
+                <h3>
+                    Hybrid Encryption
+                </h3>
+
+                <p>
+                    AES-256 encrypts your files while RSA-2048
+                    securely protects the encryption keys.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    ☁️
+                </div>
+
+                <h3>
+                    Cloud File Storage
+                </h3>
+
+                <p>
+                    Upload, manage, download and organize your
+                    files from one secure cloud vault.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🛡️
+                </div>
+
+                <h3>
+                    File Integrity
+                </h3>
+
+                <p>
+                    SHA-256 verification helps ensure your files
+                    remain unchanged and trustworthy.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    ↗
+                </div>
+
+                <h3>
+                    Secure Sharing
+                </h3>
+
+                <p>
+                    Share files with authorized users while
+                    maintaining security controls.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    ↻
+                </div>
+
+                <h3>
+                    File Versions
+                </h3>
+
+                <p>
+                    Keep track of previous versions of important
+                    files and manage them securely.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    ◷
+                </div>
+
+                <h3>
+                    Activity Logs
+                </h3>
+
+                <p>
+                    Monitor important account and file activities
+                    through a secure activity log.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= HOW IT WORKS ================= -->
+
+    <section class="how">
+
+        <div class="section-title">
+
+            <h2>
+                How CipherVault works
+            </h2>
+
+            <p>
+                Three simple steps to secure your files.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    1
+                </div>
+
+                <h3>
+                    Upload
+                </h3>
+
+                <p>
+                    Select the file you want to store
+                    in your secure vault.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    2
+                </div>
+
+                <h3>
+                    Encrypt
+                </h3>
+
+                <p>
+                    CipherVault encrypts the file using
+                    AES-256 and protects the key with RSA-2048.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    3
+                </div>
+
+                <h3>
+                    Store Securely
+                </h3>
+
+                <p>
+                    Your encrypted file is stored securely
+                    and can be accessed when needed.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= CTA ================= -->
+
+    <section class="cta">
+
+        <h2>
+            Ready to secure your files?
+        </h2>
+
+        <p>
+            Create your CipherVault account and start storing
+            your files securely.
+        </p>
+
+
+        <a href="/register"
+           class="btn btn-primary">
+
+            🔐 Create Your Vault
+
+        </a>
+
+    </section>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="landing-footer">
+
+        🔐 <strong>CipherVault</strong>
+
+        · Hybrid Encrypted Cloud File Storage System
+
+        · AES-256 + RSA-2048
+
+        <br><br>
+
+        © 2026 CipherVault. Secure your files. Protect your data.
+
+    </footer>
+
+
+</div>
+
+</body>
+
+</html>

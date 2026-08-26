@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | CipherVault</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/vault-theme.css') }}">
+
+    <style>
+
+        body {
+            min-height: 100vh;
+            background: #fbf8ef;
+        }
+
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+        }
+
+        .auth-wrapper {
+            width: 100%;
+            max-width: 950px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: #fff;
+            border: 1px solid #e4dcc9;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(80,65,25,.09);
+        }
+
+        /* LEFT */
+
+        .auth-info {
+            padding: 55px 45px;
+            background: #f5e7bd;
+            border-right: 1px solid #e0cd95;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+        }
+
+        .auth-info h1 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 39px;
+            line-height: 1.1;
+            margin-top: 70px;
+            color: #171711;
+        }
+
+        .auth-info h1 span {
+            color: #98700a;
+        }
+
+        .auth-info > p {
+            color: #71684e;
+            font-size: 13px;
+            line-height: 1.8;
+            margin-top: 15px;
+        }
+
+        .security-list {
+            margin-top: 35px;
+        }
+
+        .security-item {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            color: #5f5742;
+        }
+
+        .security-item span {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* RIGHT */
+
+        .auth-form {
+            padding: 55px 45px;
+        }
+
+        .back-home {
+            color: #817967;
+            text-decoration: none;
+            font-size: 11px;
+        }
+
+        .form-heading {
+            margin-top: 45px;
+        }
+
+        .form-heading h2 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 29px;
+            color: #171711;
+        }
+
+        .form-heading p {
+            margin-top: 7px;
+            color: #817967;
+            font-size: 12px;
+        }
+
+        .form-group {
+            margin-top: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #403d32;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #ddd5c3;
+            border-radius: 9px;
+            background: #fffdf8;
+            outline: none;
+            font-family: Inter, sans-serif;
+            font-size: 12px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            border-color: #b89232;
+            box-shadow: 0 0 0 3px rgba(184,146,50,.10);
+        }
+
+        .password-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 7px;
+        }
+
+        .password-row label {
+            margin-bottom: 0;
+        }
+
+        .forgot {
+            font-size: 10.5px;
+            color: #98700a;
+            text-decoration: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .register-text {
+            text-align: center;
+            margin-top: 22px;
+            color: #817967;
+            font-size: 11.5px;
+        }
+
+        .register-text a {
+            color: #98700a;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .secure-note {
+            margin-top: 30px;
+            padding: 12px;
+            border-radius: 9px;
+            background: #e5f7f2;
+            color: #24786d;
+            font-size: 10.5px;
+            text-align: center;
+        }
+
+        @media(max-width:750px) {
+
+            .auth-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-info {
+                display: none;
+            }
+
+            .auth-form {
+                padding: 40px 28px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="auth-page">
+
+    <div class="auth-wrapper">
+
+
+        <!-- LEFT INFORMATION -->
+
+        <div class="auth-info">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    🔐
+                </div>
+
+                CipherVault
+
+            </div>
+
+
+            <h1>
+
+                Welcome back to
+                <span>your vault.</span>
+
+            </h1>
+
+
+            <p>
+
+                Access your secure cloud storage and manage
+                your encrypted files from one protected place.
+
+            </p>
+
+
+            <div class="security-list">
+
+                <div class="security-item">
+
+                    <span>🔐</span>
+
+                    AES-256 File Encryption
+
+                </div>
+
+
+                <div class="security-item">
+
+                    <span>🔑</span>
+
+                    RSA-2048 Key Protection
+
+                </div>
+
+
+                <div class="security-item">
+
+                    <span>🛡️</span>
+
+                    SHA-256 File Integrity
+
+                </div>
+
+
+                <div class="security-item">
+
+                    <span>☁️</span>
+
+                    Secure Cloud Storage
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- LOGIN FORM -->
+
+        <div class="auth-form">
+
+            <a href="/"
+               class="back-home">
+
+                ← Back to Home
+
+            </a>
+
+
+            <div class="form-heading">
+
+                <h2>
+                    Sign in
+                </h2>
+
+                <p>
+                    Enter your credentials to access your vault.
+                </p>
+
+            </div>
+
+
+            <!-- Flash Messages -->
+
+            {% with messages = get_flashed_messages() %}
+
+                {% if messages %}
+
+                    <div style="
+                        margin-top:18px;
+                        padding:11px;
+                        border-radius:8px;
+                        background:#fff1f0;
+                        color:#a94442;
+                        font-size:11px;
+                    ">
+
+                        {% for message in messages %}
+
+                            {{ message }}
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <form method="POST"
+                  action="/login">
+
+
+                <div class="form-group">
+
+                    <label>
+                        EMAIL ADDRESS
+                    </label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                        autocomplete="email"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <div class="password-row">
+
+                        <label>
+                            PASSWORD
+                        </label>
+
+                        <a href="/forgot-password"
+                           class="forgot">
+
+                            Forgot password?
+
+                        </a>
+
+                    </div>
+
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required
+                        autocomplete="current-password"
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary login-btn">
+
+                    🔐 Sign In Securely
+
+                </button>
+
+            </form>
+
+
+            <div class="register-text">
+
+                Don't have an account?
+
+                <a href="/register">
+                    Create an account
+                </a>
+
+            </div>
+
+
+            <div class="secure-note">
+
+                🛡️ Your login is protected by CipherVault security.
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Share File | CipherVault</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/vault-theme.css') }}">
+</head><body class="auth-body">
+<div class="auth-panel">
+<h2>Share File</h2>
+<p class="sub">Sharing: <strong>{{ filename }}</strong></p>
+{% if error %}<div class="msg-error">{{ error }}</div>{% endif %}
+<form method="POST">
+<div class="field"><label>Recipient email</label><input type="email" name="shared_with_email" required></div>
+<div class="field"><label>Permission</label>
+<select name="permission"><option value="download">Download</option></select></div>
+<div class="field"><label>Expires in (days)</label><input type="number" name="expiry_days" min="1" max="30" value="7"></div>
+<button class="btn-submit" type="submit">Share Securely</button>
+</form>
+<div class="foot-link"><a href="/myfiles">Back to My Files</a></div>
+</div></body></html>

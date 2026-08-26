@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Recycle Bin | CipherVault</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/vault-theme.css') }}">
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-mark">🔐</div>
+            <div class="brand-name">CipherVault</div>
+        </div>
+
+        <div class="nav-section-label">Main</div>
+
+        <a href="/dashboard" class="nav-item">
+            <span class="ic">▦</span>
+            Dashboard
+        </a>
+
+        <a href="/myfiles" class="nav-item">
+            <span class="ic">▤</span>
+            My Files
+        </a>
+
+        <a href="/shared-with-me" class="nav-item">
+            <span class="ic">↗</span>
+            Shared With Me
+        </a>
+
+        <a href="/my-shares" class="nav-item">
+            <span class="ic">⇧</span>
+            My Shares
+        </a>
+
+        <div class="nav-section-label">Storage</div>
+
+        <a href="/trash" class="nav-item active">
+            <span class="ic">♲</span>
+            Recycle Bin
+        </a>
+
+        <a href="/storage-usage" class="nav-item">
+            <span class="ic">◒</span>
+            Storage Usage
+        </a>
+
+        <div class="nav-section-label">Security</div>
+
+        <a href="/activity-log" class="nav-item">
+            <span class="ic">◷</span>
+            Activity Log
+        </a>
+
+        <a href="/versions" class="nav-item">
+            <span class="ic">↻</span>
+            File Versions
+        </a>
+
+        <a href="/profile" class="nav-item">
+            <span class="ic">◎</span>
+            Profile
+        </a>
+
+        <div class="sidebar-footer">
+
+            <div class="avatar">
+                {{ session.get('fullname', 'U')[0]|upper }}
+            </div>
+
+            <div class="user-meta">
+
+                <div class="name">
+                    {{ session.get('fullname', 'User') }}
+                </div>
+
+                <div class="role">
+                    Secure account
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <h2>Recycle Bin</h2>
+
+            <div class="vault-status">
+                <span class="pulse-dot"></span>
+                Secure File Recovery
+            </div>
+
+        </header>
+
+
+        <section class="content">
+
+            <!-- PAGE HEADER -->
+
+            <div class="page-head">
+
+                <div>
+
+                    <h1>Recycle Bin</h1>
+
+                    <p>
+                        Files moved here can be restored or permanently removed.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= INFO ================= -->
+
+            <div class="panel"
+                 style="margin-bottom:20px;">
+
+                <div style="
+                    padding:18px 20px;
+                    display:flex;
+                    align-items:center;
+                    gap:14px;
+                ">
+
+                    <div style="
+                        width:45px;
+                        height:45px;
+                        border-radius:12px;
+                        background:#fbf1da;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        font-size:22px;
+                    ">
+                        ♲
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Deleted files
+                        </strong>
+
+                        <p style="
+                            color:var(--muted);
+                            font-size:11.5px;
+                            margin-top:3px;
+                        ">
+
+                            Your deleted files are kept separately
+                            so they can be restored when needed.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= TRASH TABLE ================= -->
+
+            <div class="panel">
+
+                <div class="panel-head">
+
+                    <h2>
+                        🗑️ Deleted Files
+                    </h2>
+
+                    {% if files %}
+
+                    <span class="badge">
+                        {{ files|length }} items
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                {% if files %}
+
+                <div style="overflow-x:auto;">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    File
+                                </th>
+
+                                <th>
+                                    Size
+                                </th>
+
+                                <th>
+                                    Deleted
+                                </th>
+
+                                <th>
+                                    Security
+                                </th>
+
+                                <th style="text-align:right;">
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                        {% for file in files %}
+
+                            <tr>
+
+                                <!-- FILE -->
+
+                                <td>
+
+                                    <div class="file-cell">
+
+                                        <div class="file-ic"
+                                             style="
+                                                background:#fff4e7;
+                                                color:#a66b20;
+                                             ">
+
+                                            {{ file.filename.split('.')[-1][:3]|upper
+                                               if '.' in file.filename
+                                               else 'FILE' }}
+
+                                        </div>
+
+                                        <div>
+
+                                            <div class="file-name">
+
+                                                {{ file.filename }}
+
+                                            </div>
+
+                                            <div class="file-sub">
+
+                                                Moved to Recycle Bin
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- SIZE -->
+
+                                <td>
+
+                                    <span style="
+                                        font-family:'JetBrains Mono',monospace;
+                                        font-size:11.5px;
+                                        color:var(--muted);
+                                    ">
+
+                                        {{ file.size|default('—') }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- DATE -->
+
+                                <td>
+
+                                    <span style="
+                                        color:var(--muted);
+                                        font-size:12px;
+                                    ">
+
+                                        {{ file.deleted_at
+                                           if file.deleted_at
+                                           else file.delete_date
+                                           if file.delete_date
+                                           else '—' }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- SECURITY -->
+
+                                <td>
+
+                                    <span class="badge badge-teal">
+
+                                        🔒 PROTECTED
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- ACTIONS -->
+
+                                <td>
+
+                                    <div class="actions-cell">
+
+                                        <!-- RESTORE -->
+
+                                        <a
+                                            href="/restore/{{ file.filename }}"
+                                            class="icon-btn"
+                                            title="Restore"
+                                        >
+
+                                            ↶
+
+                                        </a>
+
+
+                                        <!-- PERMANENT DELETE -->
+
+                                        <a
+                                            href="/permanent-delete/{{ file.filename }}"
+                                            class="icon-btn danger"
+                                            title="Delete Permanently"
+                                            onclick="
+                                                return confirm(
+                                                    'Delete this file permanently? This cannot be undone.'
+                                                );
+                                            "
+                                        >
+
+                                            🗑
+
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                {% else %}
+
+                <!-- ================= EMPTY STATE ================= -->
+
+                <div class="empty-state">
+
+                    <div class="ic">
+                        ♲
+                    </div>
+
+                    <h3 style="
+                        color:var(--text);
+                        margin-bottom:6px;
+                    ">
+
+                        Recycle Bin is empty
+
+                    </h3>
+
+                    <p>
+
+                        Deleted files will appear here.
+
+                    </p>
+
+
+                    <a href="/myfiles"
+                       class="btn btn-primary">
+
+                        📁 Go to My Files
+
+                    </a>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- ================= WARNING ================= -->
+
+            <div class="panel"
+                 style="
+                    margin-top:20px;
+                    border-color:#ead9b0;
+                 ">
+
+                <div style="
+                    padding:17px 20px;
+                    display:flex;
+                    align-items:center;
+                    gap:12px;
+                ">
+
+                    <div style="
+                        width:40px;
+                        height:40px;
+                        border-radius:10px;
+                        background:#fff4dd;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                    ">
+
+                        ⚠️
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Permanent deletion cannot be undone
+                        </strong>
+
+                        <p style="
+                            color:var(--muted);
+                            font-size:11.5px;
+                            margin-top:3px;
+                        ">
+
+                            Make sure you no longer need a file before
+                            permanently deleting it.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <footer style="
+            padding:18px 30px;
+            border-top:1px solid var(--border);
+            background:#ffffff;
+            color:#9b947f;
+            font-size:11px;
+            text-align:center;
+        ">
+
+            🔐 CipherVault · Hybrid Encrypted Cloud File Storage System
+
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

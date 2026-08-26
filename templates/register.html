@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register | Hybrid Encrypted Cloud Storage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/vault-theme.css') }}">
+</head>
+<body class="auth-body">
+  <div class="auth-glow"></div>
+
+  <div class="auth-panel">
+    <div class="brand" style="padding-bottom:22px;">
+      <div class="brand-mark">&#128274;</div>
+      <div class="brand-name">CipherVault</div>
+    </div>
+
+    <h2>Create your account</h2>
+    <p class="sub">Your files will be hybrid-encrypted from the very first upload.</p>
+
+    {% if error %}
+      <div class="msg-error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+      <div class="field">
+        <label>Full name</label>
+        <input type="text" name="username" placeholder="Your name" required>
+      </div>
+      <div class="field">
+        <label>Email address</label>
+        <input type="email" name="email" placeholder="you@example.com" required>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="At least 6 characters" required>
+      </div>
+      <button type="submit" class="btn-submit">Create account</button>
+    </form>
+
+    <div class="foot-link">Already have an account? <a href="/login">Log in</a></div>
+
+    <div class="auth-vault-chip">&#128274; AES-256 · RSA-2048</div>
+  </div>
+</body>
+</html>
